@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+EAsybUy | Update Profile
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-6">
+<form method="POST" action="{% url 'update_info' %}">
+    <br><br>
+    <h1>Update Your info</h1>
+    <br>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit" class="btn btn-success w-100">Update</button>
+</form>
+<div class="col-md-4"></div>
+    <br><br>
+</div>
+{% endblock %}

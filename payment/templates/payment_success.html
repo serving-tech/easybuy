@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Payment Success
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-6">
+        <h2>Payment Pending!</h2>
+        <p>Thank you for visiting us. Your transaction is pending.</p>
+        <a href="{% url 'index' %}" class="btn btn-primary w-100">Return to Home</a>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+{% endblock %}

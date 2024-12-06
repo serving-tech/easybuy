@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Search Results for "{{ query }}"</h2>
+
+  <!-- Messages -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Search Form -->
+  <div class="card-body">
+    <form method="GET" action="{% url 'search' %}">
+      <div class="mb-3">
+        <input type="text" class="form-control" name="query" placeholder="Search for Properties..."
+               value="{{ query }}">
+      </div>
+      <button type="submit" class="btn btn-success">Search</button>
+    </form>
+  </div>
+
+  {% if searched.exists %}
+    <div class="property-list">
+      {% for property in page_obj %}
+        <!-- Make the entire property clickable -->
+        <a href="{% url 'propertysingle' property.id %}" class="text-decoration-none text-dark">
+          <div class="property-item d-flex align-items-center border-bottom py-3">
+            <!-- Image Section -->
+            <div class="property-image me-3">
+              <img src="{{ property.image.url }}" alt="{{ property.title }}" style="width: 150px; height: 100px; object-fit: cover;">
+            </div>
+
+            <!-- Details Section -->
+            <div class="property-details">
+              <h4>{{ property.title }}</h4>
+              <p><strong>Price:</strong> ${{ property.price }}</p>
+              <p><strong>Location:</strong> {{ property.location }}</p>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?query={{ query }}&page=1">&laquo; First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?query={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+          </li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        </li>
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?query={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?query={{ query }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% else %}
+    <div class="alert alert-info mt-4">
+      <p>No results found. Try using different keywords.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
